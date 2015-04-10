@@ -5,15 +5,15 @@ namespace Hackzilla\Bundle\TicketBundle\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Hackzilla\Bundle\TicketBundle\Entity\Ticket;
 use Hackzilla\Bundle\TicketBundle\Entity\TicketMessage;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Hackzilla\Bundle\TicketBundle\User\UserInterface;
 
 class UserLoad
 {
-    protected $container;
+    protected $userManager;
 
-    public function __construct(ContainerInterface $container)
+    public function setUserManager(UserInterface $userManager)
     {
-        $this->container = $container;
+        $this->userManager = $userManager;
     }
 
     public function getSubscribedEvents()
@@ -26,7 +26,7 @@ class UserLoad
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $userManager = $this->container->get('hackzilla_ticket.user');
+        $userManager = $this->userManager;
 
         if ($entity instanceof Ticket) {
             if (\is_null($entity->getUserCreatedObject())) {

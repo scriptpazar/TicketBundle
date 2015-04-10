@@ -7,19 +7,24 @@ parameters:
 services:
     hackzilla_ticket.listener:
         class: %hackzilla_ticket.user_load.class%
-        arguments: ['@service_container']
+        calls:
+            - [setUserManager, ["@hackzilla_ticket.user"]]
         tags:
             - { name: doctrine.event_listener, event: postLoad }
 
     hackzilla_ticket_user_extension:
         class: %hackzilla_ticket.twig_user.class%
-        arguments: ['@service_container']
+        calls:
+            - [setUserManager, ["@hackzilla_ticket.user"]]
         tags:
             - { name: twig.extension }
 
     hackzilla_ticket.user:
         class: %hackzilla_ticket.user_bridge.class%
-        arguments: ['@security.context', '@fos_user.user_manager']
+        calls:
+            - [setUserManager, ["@fos_user.user_manager"]]
+            - [setSecurityToken, ["@security.token_storage"]]
+            - [setSecurityChecker, ["@security.authorization_checker"]]
 
     hackzilla_ticket.ticket_manager:
         class: %hackzilla_ticket.ticket_manager.class%

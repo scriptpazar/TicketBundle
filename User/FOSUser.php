@@ -2,19 +2,37 @@
 
 namespace Hackzilla\Bundle\TicketBundle\User;
 
-use Hackzilla\Bundle\TicketBundle\User\UserInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface as SecurityTokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class FOSUser implements UserInterface
 {
     private $securityContext;
+    private $securityToken;
+    private $securityChecker;
     private $userManager;
 
-    function __construct(SecurityContextInterface $securityContext, UserInterface $userManager)
+    public function setUserManager($userManager)
     {
-        $this->securityContext = $securityContext;
         $this->userManager = $userManager;
     }
+
+    public function setSecurityContext(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
+    public function setSecurityToken(SecurityTokenStorageInterface $securityToken)
+    {
+        $this->securityToken = $securityToken;
+    }
+
+    public function setSecurityChecker(AuthorizationCheckerInterface $securityChecker)
+    {
+        $this->securityChecker = $securityChecker;
+    }
+
 
     /**
      * @return mixed

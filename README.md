@@ -1,7 +1,7 @@
-Ticketing Bundle v1
+Ticketing Bundle v2
 ===================
 
-Work in progress. See 0.9 for [current version](https://github.com/hackzilla/TicketBundle/tree/0.9.x).
+Work in progress. See 1.0 for [current version](https://github.com/hackzilla/TicketBundle/tree/1.x.x).
 
 Simple multilingual ticketing bundle to add to any project.
 Languages: English, French, Russian, German and Spanish.
@@ -25,7 +25,7 @@ Add HackzillaTicketBundle in your composer.json:
 ```json
 {
     "require": {
-        "hackzilla/ticket-bundle": "~1.0",
+        "hackzilla/ticket-bundle": "~2.0",
         "friendsofsymfony/user-bundle": "~2.0@dev",
     }
 }
@@ -112,6 +112,11 @@ Change Log
  - Moved UserInterface into bundle
  - Moved Ticket Manager to its own namespace
 
+
+Migrating to 2.0 from 1.0
+-------------------------
+
+    - Requires Symfony 2.6+
 
 Migrating to 1.0
 ----------------

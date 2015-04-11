@@ -2,7 +2,7 @@ parameters:
     hackzilla_ticket.user_load.class: Hackzilla\Bundle\TicketBundle\EventListener\UserLoad
     hackzilla_ticket.twig_user.class: Hackzilla\Bundle\TicketBundle\Extension\UserExtension
     hackzilla_ticket.ticket_manager.class: Hackzilla\Bundle\TicketBundle\Manager\TicketManager
-    hackzilla_ticket.user_bridge.class: Hackzilla\Bundle\TicketBundle\User\FOSUser
+    hackzilla_ticket.user_bridge.class: Hackzilla\Bundle\TicketBundle\User\UserManager
 
 services:
     hackzilla_ticket.listener:
@@ -23,9 +23,17 @@ services:
         class: %hackzilla_ticket.user_bridge.class%
         calls:
             - [setUserManager, ["@fos_user.user_manager"]]
-            - [setSecurityToken, ["@security.token_storage"]]
-            - [setSecurityChecker, ["@security.authorization_checker"]]
 
     hackzilla_ticket.ticket_manager:
         class: %hackzilla_ticket.ticket_manager.class%
-        arguments: ["@doctrine.orm.entity_manager"]
+        arguments: ["@ticket_bundle.fos_user_manager.doctrine"]
+
+    ticket_bundle.fos_user_manager.doctrine:
+        class: FOS\UserBundle\Doctrine\UserManager
+        public: false
+        arguments:
+          - "@security.encoder_factory"
+          - "@fos_user.util.username_canonicalizer"
+          - "@fos_user.util.email_canonicalizer"
+          - "@fos_user.entity_manager"
+          - "%fos_user.model.user.class%"

@@ -3,15 +3,16 @@
 namespace Hackzilla\Bundle\TicketBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use FOS\UserBundle\Model\UserManagerInterface;
 use Hackzilla\Bundle\TicketBundle\Entity\Ticket;
 use Hackzilla\Bundle\TicketBundle\Entity\TicketMessage;
 
 class TicketManager implements TicketManagerInterface
 {
-    public function __construct(ObjectManager $om)
+    public function __construct(UserManagerInterface $userManager)
     {
-        $this->ObjectManager = $om;
-        $this->repository = $om->getRepository('HackzillaTicketBundle:Ticket');
+        $this->ObjectManager = $userManager->getObjectManager();
+        $this->repository = $this->ObjectManager->getRepository('HackzillaTicketBundle:Ticket');
     }
 
     /**
